@@ -1,0 +1,48 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0111 Debit Card
+    [Documentation]    Debit Card Account, Missed in R6
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Expect Text RegEx    Header_PageTitleLabel    Debit (Card|Rewards) Account
+    ${page title} =    Get Element Text    Header_PageTitleValue
+    Verify Account    ${page title}    ${account}
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    [Teardown]    Close Extra Windows
+
+O99-0112 Checking
+    [Documentation]    Deposit Account, Verify existing functionality still works
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Expect Text    Header_PageTitleLabel    Checking Account
+    ${page title} =    Get Element Text    Header_PageTitleValue
+    Verify Account    ${page title}    ${account}
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    [Teardown]    Close Extra Windows

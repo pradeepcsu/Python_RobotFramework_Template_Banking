@@ -1,0 +1,96 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0221 LOC - Active
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for an LOC campaign.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0222 LOC - Completed
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for an LOC campaign.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0223 Escheatment - Active
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for an Escheatment campaign.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0224 Escheatment - Completed
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for an Escheatment campaign.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0225 Skip Payment - Active
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for an Skip Payment campaign.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0226 Skip Payment - Completed
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for an Skip Payment campaign.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0227 Two Same Special Campaign Types
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for a member with two campaigns of the same type.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0228 Two Different Special Campaign Types
+    [Documentation]    Verify campaign counter displays correctly on the UMP
+    ...                for a member with two campaigns of different type.  
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows

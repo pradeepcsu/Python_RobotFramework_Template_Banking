@@ -1,0 +1,35 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0011 Add SR Note - Account Based
+    [Documentation]    Verify Service Request note feature on an account based
+    ...                SR.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Open Account From UMP    ${account}
+    Add Service Request    Check Copy
+    Put Text    SR_NewNote    Test Note
+    Click On    Ribbon_Save
+    [Teardown]    Close Extra Windows
+
+O99-0012 Add SR Note - Member Based
+    [Documentation]    Verify Service Request note feature on a member based
+    ...                SR.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_UpdateMemberDetails
+    Click On    Ribbon_AddNewUpdateMemberDetail
+    Register Window
+    Select List Item    UpdateMemberDetail_Freedom50    Yes
+    Put Text    SR_NewNote    Test Note
+    Click On    Ribbon_SaveClose
+    Unregister Window
+    [Teardown]    Close Extra Windows

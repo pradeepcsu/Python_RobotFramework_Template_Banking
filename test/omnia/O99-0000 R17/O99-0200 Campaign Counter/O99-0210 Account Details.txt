@@ -1,0 +1,114 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0211 Credit Card - Active LOC Campaign
+    [Documentation]    Credit Card Account with a campaign that has status of
+    ...                Active.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0212 CD - Active LOC Campaign
+    [Documentation]    Credit Card Account with a campaign that has status of
+    ...                Active.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+    
+O99-0213 FDR HELOC - Active Skip Payment Campaign
+    [Documentation]    FDR HELOC account with a campaign that has status of
+    ...                Active.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+    
+O99-0214 Deposits - Active Escheatment Campaign
+    [Documentation]    Deposit account with a campaign that has status of
+    ...                Active.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0215 Loan - Active Escheatment Campaign
+    [Documentation]    Loan account with a campaign that has status of
+    ...                Active.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0216 AM HELOC - Active Skip Payment Campaign
+    [Documentation]    AM HELOC account with a campaign that has status of
+    ...                Active.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0217 LOC - Completed Skip Payment Campaign
+    [Documentation]    LOC account with a campaign that has status of
+    ...                Completed.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}    loc=True
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0218 Two Same Special Campaign Types - Loan Account
+    [Documentation]    Loan account with two campaigns of the same type.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows
+
+O99-0219 Two Different Special Campaign Types - Deposit Account
+    [Documentation]    Deposit account with two campaigns of different types.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Open Account From UMP    ${account}
+    Expect Text    Header_Campaigns    ${active campaigns}
+    [Teardown]    Close Extra Windows

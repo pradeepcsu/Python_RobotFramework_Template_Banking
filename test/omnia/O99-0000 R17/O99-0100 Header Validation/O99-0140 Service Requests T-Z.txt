@@ -1,0 +1,246 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0141 Title Request
+    [Documentation]    Title Request Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Title Request
+    Expect Text    Header_PageTitleLabel    Title Request
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    TitleRequest_Type    Member Paid - W
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Title Request
+    Expect Text RegEx    Header_PageTitleValue    Title Requests: [A-Z\\s,-]+: [0-9\\*]+
+    Expect Text RegEx    Header_ServiceRequestID    TR-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0142 Transaction Dispute
+    [Documentation]    Transaction Dispute Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Transaction Dispute
+    Expect Text    Header_PageTitleLabel    Transaction Dispute
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Enter Text    TransactionDispute_FromDate    1/1/2013
+    Click On    TransactionDispute_Search
+    Select Transaction To Dispute
+    Select List Item    TransactionDispute_TransactionType    Unauthorized Pinned - W
+    Enter Text    TransactionDispute_DollarAmountDisputed    1
+    Enter Text    TransactionDispute_MemberPhone    210-476-4639
+    Select List Item    TransactionDispute_UnauthorizedPinned_ReasonForDispute    Other
+    Enter Text    TransactionDispute_Claimant    Test Member
+    Enter Text    TransactionDispute_CardNumber    0123456789
+    Select List Item    SR_DeliveryMethod    Mail
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Transaction Dispute
+    Expect Text RegEx    Header_PageTitleValue    Transaction Dispute: [A-Z\\s,-]+: [0-9\\*]+
+    Expect Text RegEx    Header_ServiceRequestID    TD-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0143 Universal Member Profile
+    [Documentation]    Universal Member Profile
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Expect Text    Header_PageTitleLabel    Member
+    Expect Text RegEx    Header_PageTitleValue    [A-Z\\s,-]+
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    [Teardown]    Close Extra Windows
+
+O99-0144 Update Account Detail
+    [Documentation]    Update Account Detail Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Update Account Detail
+    Expect Text    Header_PageTitleLabel    Update Account Detail
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Put Text    SR_NewNote    test note
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Update Account Detail
+    Expect Text RegEx    Header_PageTitleValue    Information
+    Expect Text RegEx    Header_ServiceRequestID    UA-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+#O99-0145 Update CC Statement Type
+#    [Documentation]    Update CC Statement Type Service Request
+#    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+#    Load Browser
+#    Query Member Omnia    ${ssn}    ${cis}
+#    Click On    LeftNav_Tree_Campaigns
+#    ${active campaigns} =    Count Active Campaigns
+#    Click On    LeftNav_Opportunities
+#    ${open opportunities} =    Count Open Opportunities
+#    Open Account From UMP    ${account}
+#    Add Service Request    Update CC Statement Type
+#    Expect Text    Header_PageTitleLabel    Update CC Statement Type
+#    Expect Text    Header_PageTitleValue    New
+#    Open TSSO
+#    Query Member Host    ${cis}
+#    Verify Header
+#    Expect Text    Header_Campaigns    ${active campaigns}
+#    Expect Text    Header_Opportunities    ${open opportunities}
+#    Select List Item    UpdateCCStatementType_PaperStatement    Yes
+#    Click On    Ribbon_Save
+#    Expect Text    Header_PageTitleLabel    Update CC Statement Type
+#    Expect Text RegEx    Header_PageTitleValue    Update CC Statement Type: [A-Z\\s,-]+
+#    Expect Text RegEx    Header_ServiceRequestID    UC-[A-Z0-9]+
+#    [Teardown]    Close Extra Windows
+
+O99-0146 Update Member Detail
+    [Documentation]    Update Member Detail Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_UpdateMemberDetails
+    Click On    Ribbon_AddNewUpdateMemberDetail
+    Register Window
+    Expect Text    Header_PageTitleLabel    Update Member Detail
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    UpdateMemberDetail_Freedom50    Yes
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Update Member Detail
+    Expect Text RegEx    Header_PageTitleValue    Information
+    Expect Text RegEx    Header_ServiceRequestID    UM-[A-Z0-9]+
+    Click On    Ribbon_SaveClose
+    Unregister Window
+    [Teardown]    Close Extra Windows
+
+#O99-0147 Update Rewards Program
+#    [Documentation]    Update Rewards Program Service Request
+#    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+#    Load Browser
+#    Query Member Omnia    ${ssn}    ${cis}
+#    Click On    LeftNav_Tree_Campaigns
+#    ${active campaigns} =    Count Active Campaigns
+#    Click On    LeftNav_Opportunities
+#    ${open opportunities} =    Count Open Opportunities
+#    Open Account From UMP    ${account}
+#    Add Service Request    Update Rewards Program
+#    Expect Text    Header_PageTitleLabel    Update Rewards Program
+#    Expect Text    Header_PageTitleValue    New
+#    Open TSSO
+#    Query Member Host    ${cis}
+#    Verify Header
+#    Expect Text    Header_Campaigns    ${active campaigns}
+#    Expect Text    Header_Opportunities    ${open opportunities}
+#    Select List Item    UpdateRewardsProgram_UpdateRewardsProgram    Points
+#    Click On    Ribbon_Save
+#    Expect Text    Header_PageTitleLabel    Update Rewards Program
+#    Expect Text RegEx    Header_PageTitleValue    Update Rewards Programs: [A-Z\\s,-]+: [0-9]+
+#    Expect Text RegEx    Header_ServiceRequestID    UR-[A-Z0-9]+
+#    [Teardown]    Close Extra Windows
+
+O99-0148 Western Union Speedpay
+    [Documentation]    Western Union Speedpay Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Western Union Speedpay
+    Expect Text    Header_PageTitleLabel    Western Union SpeedPay
+    Expect Text RegEx    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    WesternUnionSpeedpay_ActivityStatus    Completed
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Western Union SpeedPay
+    Expect Text RegEx    Header_PageTitleValue    Western Union SpeedPay: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    WS-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0149 Western Union Transfer
+    [Documentation]    Western Union Transfer Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Western Union Transfer
+    Expect Text    Header_PageTitleLabel    Western Union Transfer (MoneyGram)
+    Expect Text RegEx    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Enter Text    WesternUnionTransfer_Name    Test Member
+    Enter Text    WesternUnionTransfer_City    Test City
+    Enter Text    WesternUnionTransfer_TransferDate    10/4/2014
+    Enter Text    WesternUnionTransfer_TransferAmount    10
+    Select List Item    WesternUnionTransfer_ThirdParty    Yes
+    Select List Item    WesternUnionTransfer_CodeWord    Yes
+    Select List Item    WesternUnionTransfer_VerifiedID    Yes
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Western Union Transfer (MoneyGram)
+    Expect Text RegEx    Header_PageTitleValue    Western Union Transfers: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    WT-[A-Z0-9]+
+    Click On    Ribbon_SaveClose
+    Unregister Window
+    [Teardown]    Close Extra Windows

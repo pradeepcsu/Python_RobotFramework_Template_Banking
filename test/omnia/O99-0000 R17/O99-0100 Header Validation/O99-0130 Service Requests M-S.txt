@@ -1,0 +1,271 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0131 Member Correspondence Request
+    [Documentation]    Member Correspondence Request Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_MemberCorrespondence
+    Click On    Ribbon_AddNewMemberCorrespondence
+    Register Window
+    Expect Text    Header_PageTitleLabel    Member Correspondence Request
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    MemberCorrespondence_Letter    Joint Owners
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Member Correspondence Request
+    Expect Text RegEx    Header_PageTitleValue    Information
+    Expect Text RegEx    Header_ServiceRequestID    MC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0132 MMACH Maintenance
+    [Documentation]    MMACH Maintenance Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_Tree_MMACHAccounts
+    Select MMACH Account    ${account}
+    Click On    Ribbon_MMACHMaintenance
+    Register Window
+    Expect Text    Header_PageTitleLabel    MMACH Maintenance
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    MMACH_Action    Freeze
+    Click On    Ribbon_Save
+    #Accept Alert
+    Expect Text    Header_PageTitleLabel    MMACH Maintenance
+    Expect Text RegEx    Header_PageTitleValue    MMACH Maintenance SRs: [A-Z\\s,-]+: [0-9\\*]+
+    Expect Text RegEx    Header_ServiceRequestID    MM-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0133 Official Check
+    [Documentation]    Official Check Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Official Check
+    Expect Text    Header_PageTitleLabel    Official Check
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Enter Text    OfficialCheck_Payee    Test Member
+    Enter Text    OfficialCheck_Amount    5
+    Enter Text    OfficialCheck_Remitter    Test Remitter
+    Select List Item    OfficialCheck_DeliveryMethod    Hold for Pickup
+    Select List Item    OfficialCheck_ThirdParty    Yes
+    Select List Item    OfficialCheck_CodeWord    Yes
+    Select List Item    OfficialCheck_VerifiedID    Yes
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Official Check
+    Expect Text RegEx    Header_PageTitleValue    Official Checks: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    OC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0134 Opportunity - Update Email
+    [Documentation]    Opportunity - Update Email Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Open Opportunity
+    Click On    Ribbon_UpdateEmailSR
+    Register Window
+    Expect Text    Header_PageTitleLabel    Email Change
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    ${random email} =    Get Random String    8
+    Enter Text    EmailChange_NewEmail    ${random email}@ssfcu.org
+    Enter Text    EmailChange_ConfirmEmail    ${random email}@ssfcu.org
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Email Change
+    Expect Text RegEx    Header_PageTitleValue    Email Changes: [A-Z\\s,-]+
+    Expect Text RegEx    Header_ServiceRequestID    EC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0135 RDC Profile Maintenance
+    [Documentation]    RDC Profile Maintenance Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_RDCProfileMaintenance
+    Click On    Ribbon_AddNewRDCProfileMaintenanceSR
+    Register Window
+    Expect Text    Header_PageTitleLabel    RDC Profile Maintenance SR
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    RDC_ServiceRequestType    Reset
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    RDC Profile Maintenance SR
+    Expect Text RegEx    Header_PageTitleValue    RDC Profile Maintenance SRs: [A-Z\\s,-]+
+    Expect Text RegEx    Header_ServiceRequestID    RD-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0136 Scheduled Transfer
+    [Documentation]    Scheduled Transfer Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_Tree_ScheduledTransfers
+    Click On    UMP_ScheduledTransfer_Grid
+    Click On    Ribbon_ScheduleATransfer
+    Register Window
+    Expect Text    Header_PageTitleLabel    Scheduled Transfer
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item Containing    ScheduledTransfer_FromAccount    ${from_account}
+    Select List Item Containing    ScheduledTransfer_ToAccount    ${to_account}
+    Select List Item    ScheduledTransfer_ScheduleBy    Unlimited Occurrences
+    Enter Text    ScheduledTransfer_Amount    5
+    Enter Text    ScheduledTransfer_StartDate    7/20/2015
+    Select List Item    SR_DeliveryMethod    Mail
+    Select List Item    ScheduledTransfer_Frequency    Weekly
+    Select List Item    ScheduledTransfer_WeekDay    Monday
+    Click On    Ribbon_SaveClose
+    ${timestamp} =    Get Timestamp
+    Unregister Window
+    #Open Scheduled Transfer    ${from_account}    ${to_account}    5.00    Weekly
+    Click On    LeftNav_Tree_MemberActivities
+    Open Last Member Activity    ${timestamp}
+    Expect Text    Header_PageTitleLabel    Scheduled Transfer SR
+    Expect Text RegEx    Header_PageTitleValue    Scheduled Transfer SRs: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    ST-[A-Z0-9]+
+    Click On    Ribbon_SaveClose
+    Unregister Window
+    Delete Scheduled Transfer    ${from_account}    ${to_account}    5.00    Weekly
+    [Teardown]    Close Extra Windows
+
+O99-0137 Secure Message
+    [Documentation]    Secure Message Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_SecureMessages
+    Click On    Ribbon_AddNewSecureMessage
+    Register Window
+    Expect Text    Header_PageTitleLabel    Secure Message
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Enter Text    SecureMessage_Subject    test subject
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Secure Message
+    Expect Text RegEx    Header_PageTitleValue    Secure Messages: [A-Z\\s,-]+
+    Expect Text RegEx    Header_ServiceRequestID    SM-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0138 Statement Copy
+    [Documentation]    Statement Copy Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Statement Copy
+    Expect Text    Header_PageTitleLabel    Statement Copy
+    Expect Text RegEx    Header_PageTitleValue    Statement Copies: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    SC-[A-Z0-9]+
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Click Random Row    StatementCopy_Grid
+    Click On    Ribbon_StatementCopy_Tab
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Statement Copy
+    Expect Text RegEx    Header_PageTitleValue    Statement Copies: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    SC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0139 Stop Payment
+    [Documentation]    Stop Payment Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Stop Payment
+    Expect Text    Header_PageTitleLabel    Stop Payment
+    Expect Text RegEx    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    StopPayment_Type    Official Check - Mailed - W
+    Select List Item    StopPayment_OfficialCheckMailed_Reason    Lost
+    Select List Item    SR_DeliveryMethod    Mail
+    Click On    Ribbon_Save    iwait=3
+    Expect Text    Header_PageTitleLabel    Stop Payment
+    Expect Text RegEx    Header_PageTitleValue    Stop Payments: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    SP-[A-Z0-9]+
+    Click On    Ribbon_StopPayment_SaveClose    wait=2
+    Unregister Window
+    [Teardown]    Close Extra Windows

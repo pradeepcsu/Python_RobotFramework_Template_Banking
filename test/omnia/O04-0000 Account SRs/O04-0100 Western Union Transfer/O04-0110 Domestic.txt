@@ -1,0 +1,30 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O04-0111 With Fee
+    [Documentation]    Western Union Transfer Service Request with Fee amount
+    ...    left unchanged.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Open Account From UMP    ${account}
+    Add Service Request    Western Union Transfer
+    #Click On    WesternUnionTransfer_No
+    Enter Text    WesternUnionTransfer_Name    Test Member
+    Enter Text    WesternUnionTransfer_City    Test City
+    Enter Text    WesternUnionTransfer_TransferDate    10/4/2014
+    Enter Text    WesternUnionTransfer_TransferAmount    10
+    Select List Item    WesternUnionTransfer_ThirdParty    Yes
+    Select List Item    WesternUnionTransfer_CodeWord    Yes
+    Select List Item    WesternUnionTransfer_VerifiedID    Yes
+    Expect Text    WesternUnionTransfer_FeeAmount    16.00
+    Expect Text    WesternUnionTransfer_TotalFeeCharged    16.00
+    Click On    Ribbon_SaveClose
+    Unregister Window
+    [Teardown]    Close Extra Windows

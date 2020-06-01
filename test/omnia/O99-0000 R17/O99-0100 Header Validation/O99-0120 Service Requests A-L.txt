@@ -1,0 +1,222 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O99-0121 Address Change
+    [Documentation]    Address Change Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    AddressChanges
+    Click On    AddressChanges_AddNew
+    Register Window
+    Expect Text    Header_PageTitleLabel    Address Change
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    ${random al2} =    Get Random String    10
+    Enter Text    AddressChange_NewAddressLine2    ${random al2}
+    Set Lookup Edit    AddressChange_NewCountry_Edit    USA
+    Click On    Ribbon_Save
+    Accept Alert
+    Unregister Window
+    ${timestamp} =    Get Timestamp
+    Open Address Change    ${timestamp}
+    Expect Text    Header_PageTitleLabel    Address Change
+    Expect Text RegEx    Header_PageTitleValue    Address Changes: [A-Z\\s,-]+
+    Expect Text RegEx    Header_ServiceRequestID    AC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0122 CD Maintenance
+    [Documentation]    CD Maintenance Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    CD Maintenance
+    Expect Text    Header_PageTitleLabel    CD Maintenance
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    CDMaintenance_Type    Change Amount - W
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    CD Maintenance
+    Expect Text RegEx    Header_PageTitleValue    CD Maintenance: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    CD-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0123 Check Copy
+    [Documentation]    Check Copy Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Check Copy
+    Expect Text    Header_PageTitleLabel    Check Copy
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Check Copy
+    Expect Text RegEx    Header_PageTitleValue    Check Copies: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    CC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+    
+O99-0124 Check Order
+    [Documentation]    Check Order Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Check Order
+    Expect Text    Header_PageTitleLabel    Check Order
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    CheckOrder_ActivityStatus    Completed
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Check Order
+    Expect Text RegEx    Header_PageTitleValue    Check Orders: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    CO-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0125 Email Change
+    [Documentation]    Email Change Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Click On    LeftNav_Tree_Details
+    Click On    Ribbon_EmailChange
+    Register Window
+    Expect Text    Header_PageTitleLabel    Email Change
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    ${random email} =    Get Random String    8
+    Enter Text    EmailChange_NewEmail    ${random email}@ssfcu.org
+    Enter Text    EmailChange_ConfirmEmail    ${random email}@ssfcu.org
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Email Change
+    Expect Text RegEx    Header_PageTitleValue    Email Changes: [A-Z\\s,-]+
+    Expect Text RegEx    Header_ServiceRequestID    EC-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0126 Fee Reversal
+    [Documentation]    Fee Reversal Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Fee Reversal
+    Wait For    NotificationText_FinishedLoading
+    Expect Text    Header_PageTitleLabel    Fee Reversal
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    FeeReversal_Type    Merchant NSF
+    Select List Item    FeeReversal_Reason    Courtesy
+    Enter Text    FeeReversal_CounterOffer    1.00
+    Put Text    SR_NewNote    test
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Fee Reversal
+    Expect Text RegEx    Header_PageTitleValue    Fee Reversals: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    FR-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0127 Loan Action
+    [Documentation]    Loan Action Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Loan Action
+    Expect Text    Header_PageTitleLabel    Loan Action
+    Expect Text    Header_PageTitleValue    New
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    LoanAction_Type    Order Coupon Book - Non ACH/AutoDebit
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Loan Action
+    Expect Text RegEx    Header_PageTitleValue    Loan Actions: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    LA-[A-Z0-9]+
+    [Teardown]    Close Extra Windows
+
+O99-0128 Loan Payoff Quote
+    [Documentation]    Loan Payoff Quote Service Request
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Click On    LeftNav_Tree_Campaigns
+    ${active campaigns} =    Count Active Campaigns
+    Click On    LeftNav_Opportunities
+    ${open opportunities} =    Count Open Opportunities
+    Open Account From UMP    ${account}
+    Add Service Request    Loan Payoff Quote
+    Expect Text    Header_PageTitleLabel    Loan Payoff Quote
+    Expect Text RegEx    Header_PageTitleValue    Loan Payoff Quotes: [A-Z\\s,-]+: [0-9]+
+    Open TSSO
+    Query Member Host    ${cis}
+    Verify Header
+    Expect Text    Header_Campaigns    ${active campaigns}
+    Expect Text    Header_Opportunities    ${open opportunities}
+    Select List Item    LoanPayoffQuote_CallerType    Member
+    Enter Text    LoanPayoffQuote_RequestorName    Test Member
+    Click On    Ribbon_Save
+    Expect Text    Header_PageTitleLabel    Loan Payoff Quote
+    Expect Text RegEx    Header_PageTitleValue    Loan Payoff Quotes: [A-Z\\s,-]+: [0-9]+
+    Expect Text RegEx    Header_ServiceRequestID    LP-[A-Z0-9]+
+    [Teardown]    Close Extra Windows

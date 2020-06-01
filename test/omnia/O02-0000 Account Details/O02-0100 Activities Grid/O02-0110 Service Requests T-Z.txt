@@ -1,0 +1,45 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O02-0111 Western Union Transfer
+    [Documentation]    Verify Activity displayed on Account Details for a Western Union Transfer Service Request.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Open Account From UMP    ${account}
+    Add Service Request    Western Union Transfer
+    #Click On    WesternUnionTransfer_No
+    Enter Text    WesternUnionTransfer_Name    Test Member
+    Enter Text    WesternUnionTransfer_City    Test City
+    Enter Text    WesternUnionTransfer_TransferDate    10/4/2014
+    Enter Text    WesternUnionTransfer_TransferAmount    10
+    Select List Item    WesternUnionTransfer_ThirdParty    Yes
+    Select List Item    WesternUnionTransfer_CodeWord    Yes
+    Select List Item    WesternUnionTransfer_VerifiedID    Yes
+    Click On    Ribbon_SaveClose
+    ${timestamp} =    Get Timestamp
+    Unregister Window
+    Click On    AccountDetails_LeftNav_Activities
+    Open Account Activity    ${timestamp}
+    [Teardown]    Close Extra Windows
+
+O02-0112 Western Union Speedpay
+    [Documentation]    Verify Activity displays correctly on Account Details for a Western Union Speedpay Service Request.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Open Account From UMP    ${account}
+    Add Service Request    Western Union Speedpay
+    Select List Item    WesternUnionSpeedpay_ActivityStatus    Completed
+    Click On    Ribbon_SaveClose
+    ${timestamp} =    Get Timestamp
+    Unregister Window
+    Click On    AccountDetails_LeftNav_Activities
+    Open Account Activity    ${timestamp}
+    [Teardown]    Close Extra Windows

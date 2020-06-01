@@ -1,0 +1,20 @@
+*** Settings ***
+Library           Selenium2Library
+Library           Screenshot
+Library           Web
+Library           Omnia
+Library           Host
+Resource          ../../Omnia Keywords.txt
+
+*** Test Cases ***
+O04-0211 Signature Loan
+    [Documentation]    Western Union Speedpay Service Request on a Signature Loan account.
+    [Setup]    Load Test Data    omnia    ${TEST NAME}    ${REGION}
+    Load Browser
+    Query Member Omnia    ${ssn}    ${cis}
+    Open Account From UMP    ${account}
+    Add Service Request    Western Union Speedpay
+    Select List Item    WesternUnionSpeedpay_ActivityStatus    Completed
+    Click On    Ribbon_SaveClose
+    Unregister Window
+    [Teardown]    Close Extra Windows
